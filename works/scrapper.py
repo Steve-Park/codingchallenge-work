@@ -9,7 +9,7 @@ import time
 
 
 class NewsScrapper:
-    def __init__(self, keyword, maxpages=20):
+    def __init__(self, keyword, maxpages=20, debug_mode:bool=True):
         """네이버 키워드 뉴스 스크래퍼 생성자
 
         Args:
@@ -20,6 +20,7 @@ class NewsScrapper:
         self.keyword = keyword
         self.current = 0
         self.maximum = maxpages if maxpages < 20 else 20
+        self.debug_mode = debug_mode
 
         random.seed(777)
 
@@ -41,7 +42,7 @@ class NewsScrapper:
         await asyncio.sleep(random.randint(1, 10))
 
         response = requests.get(self.baseurl, headers=header)
-        print(f'\t\t[scrap_page] {page} - {response.status_code} / {baseurl}')
+        self.debug_mode and print(f'\t\t[scrap_page] {page} - {response.status_code} / {baseurl}')
 
         if not response.ok:
             raise Exception(response.status_code)
@@ -82,7 +83,7 @@ class NewsScrapper:
             end = self.maximum if self.current + \
                 max_scrapper > self.maximum else self.current + max_scrapper
 
-            print(f'\t[scrap_main] start: {start + 1} - end: {end}')
+            self.debug_mode and print(f'\t[scrap_main] start: {start + 1} - end: {end}')
             scrappers = []
 
             for page in range(start + 1, end + 1):
@@ -95,7 +96,7 @@ class NewsScrapper:
                 # main_result 에 누적하고 있으나, memory 사용률을 고려하여 database 등 결과를 직접 저장 필요
                 main_result.extend(page_result)
 
-            print(f'\t[scrap_main] comulative results: {len(main_result)}')
+            self.debug_mode and print(f'\t[scrap_main] comulative results: {len(main_result)}')
 
         return main_result
 
@@ -107,8 +108,7 @@ class NewsScrapper:
         """
         start = time.perf_counter()
         news = asyncio.run(self.__scrap_main())
-        print(
-            f'[newsscrapper-gather] elipsed time: {time.perf_counter() - start:0.2f} seconds')
+        self.debug_mode and print(f'[newsscrapper-gather] elipsed time: {time.perf_counter() - start:0.2f} seconds')
 
         return news
 
@@ -121,5 +121,5 @@ class NewsScrapper:
 
 
 if __name__ == '__main__':
-    scrapper = NewsScrapper('마이데이터', 3)
+    scrapper = NewsScrapper('python', 3)
     scrapper.gather()
