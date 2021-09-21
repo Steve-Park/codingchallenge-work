@@ -98,7 +98,7 @@ class ImageScrapper:
                 self.debug_mode and print(
                     f"\t[gather] url: {image['src']} -> file: {file_name}")
 
-                if self.current > self.maximum:
+                if self.current >= self.maximum:
                     break
         except Exception as e:
             raise e
@@ -130,7 +130,7 @@ class ImageScrapper:
 
 
 if __name__ == '__main__':
-    scrapper = ImageScrapper(keyword='아이유', debug_mode=True)
+    scrapper = ImageScrapper(keyword='아이유', maximages=10, debug_mode=False)
 
     scrapper.gather()
-    print(scrapper.info())
+    # print(scrapper.info())

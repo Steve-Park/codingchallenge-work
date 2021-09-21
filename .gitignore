@@ -132,3 +132,5 @@ dmypy.json
 .vscode/
 webdriver/
 *.db
+test-result/
+.coverage
