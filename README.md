@@ -86,10 +86,16 @@ db.finalize(conn)
 ```
 ## 단위 테스트
 * pytest 를 통하여 NewsScrapper 맟 ImageScrapper 에 대하여만 테스트
+```
+pytest -v --html=./test-result/report/unittest-report.html
+```
 * Code Coverage 확인
-> pytest -v --html=./test-result/report/unittest-report.html
-> pytest --cov=. --cov-report html:./test-result/report/coverage-report
+```
+pytest --cov=. --cov-report html:./test-result/report/coverage-report
+```
 ## 정적 코드 분석
 * SonarQube 를 통하여 정적 코드 분석
 * Code Coverage 확인 등을 위한 사전 작업
-> pytest -v -o junit_family=xunit1 --cov=. --cov-report xml:test-result/coverage.xml  --junitxml=test-result/nosetests.xml
+```
+pytest -v -o junit_family=xunit1 --cov=. --cov-report xml:test-result/coverage.xml  --junitxml=test-result/nosetests.xml
+```
