@@ -104,8 +104,8 @@ pytest -v -o junit_family=xunit1 --cov=. --cov-report xml:test-result/coverage.x
 sonar-scanner \
   -Dsonar.projectKey=codingchallenge-work \
   -Dsonar.sources=. \
-  -Dsonar.host.url=http://localhost:9000 \
-  -Dsonar.login=cea0f2b4a9b24cc1ceaf2fb66c7354388f138bf1 \
+  -Dsonar.host.url=http://{SERVER_URL}:9000 \
+  -Dsonar.login={TOKEN} \
   -Dsonar.python.coverage.reportPaths=./test-result/coverage.xml \
   -Dsonar.junit.reportPaths=./test-result/nosetests.xml
 ```
