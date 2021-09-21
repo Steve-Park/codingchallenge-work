@@ -6,10 +6,11 @@ import asyncio
 import random
 import itertools
 import time
+from datetime import datetime
 
 
 class NewsScrapper:
-    def __init__(self, keyword, maxpages=20, debug_mode:bool=True):
+    def __init__(self, keyword, maxpages=20, debug_mode: bool = True):
         """네이버 키워드 뉴스 스크래퍼 생성자
 
         Args:
@@ -21,6 +22,8 @@ class NewsScrapper:
         self.current = 0
         self.maximum = maxpages if maxpages < 20 else 20
         self.debug_mode = debug_mode
+        self.start = None
+        self.end = None
 
         random.seed(777)
 
@@ -42,7 +45,8 @@ class NewsScrapper:
         await asyncio.sleep(random.randint(1, 10))
 
         response = requests.get(self.baseurl, headers=header)
-        self.debug_mode and print(f'\t\t[scrap_page] {page} - {response.status_code} / {baseurl}')
+        self.debug_mode and print(
+            f'\t\t[scrap_page] {page} - {response.status_code} / {baseurl}')
 
         if not response.ok:
             raise Exception(response.status_code)
@@ -83,7 +87,8 @@ class NewsScrapper:
             end = self.maximum if self.current + \
                 max_scrapper > self.maximum else self.current + max_scrapper
 
-            self.debug_mode and print(f'\t[scrap_main] start: {start + 1} - end: {end}')
+            self.debug_mode and print(
+                f'\t[scrap_main] start: {start + 1} - end: {end}')
             scrappers = []
 
             for page in range(start + 1, end + 1):
@@ -96,7 +101,8 @@ class NewsScrapper:
                 # main_result 에 누적하고 있으나, memory 사용률을 고려하여 database 등 결과를 직접 저장 필요
                 main_result.extend(page_result)
 
-            self.debug_mode and print(f'\t[scrap_main] comulative results: {len(main_result)}')
+            self.debug_mode and print(
+                f'\t[scrap_main] comulative results: {len(main_result)}')
 
         return main_result
 
@@ -107,19 +113,37 @@ class NewsScrapper:
             dictionary: 네이버 뉴스 스크래핑 dictionary의 list
         """
         start = time.perf_counter()
+        self.start = datetime.now()
+
         news = asyncio.run(self.__scrap_main())
-        self.debug_mode and print(f'[newsscrapper-gather] elipsed time: {time.perf_counter() - start:0.2f} seconds')
+
+        self.debug_mode and print(
+            f'[newsscrapper-gather] elipsed time: {time.perf_counter() - start:0.2f} seconds')
+        self.end = datetime.now()
 
         return news
 
     def info(self):
         """환경 설정 확인용 함수
         """
-        print(self.baseurl)
-        print(self.keyword)
-        print(self.maximum)
+        info = {
+            'baseurl': self.baseurl,
+            'keyword': self.keyword,
+            'current': self.current,
+            'maximum': self.maximum,
+            'start': self.start,
+            'end': self.end
+        }
+
+        if self.debug_mode:
+            print(f'[newsscrapper-info]')
+            for key, value in info.items():
+                print(f'\t{key} : {value}')
+
+        return info
 
 
 if __name__ == '__main__':
-    scrapper = NewsScrapper('python', 3)
+    scrapper = NewsScrapper('python', 3, True)
     scrapper.gather()
+    scrapper.info()
