@@ -63,11 +63,10 @@ class ImageScrapper:
         ssl._create_default_https_context = ssl._create_unverified_context
 
         # 저장 위치 존재 여부 확인 및 재구성
-        if self.debug_mode:
-            if os.path.exists(self.location):
-                for f in os.listdir(self.location):
-                    os.remove(os.path.join(self.location, f))
-                os.rmdir(self.location)
+        if self.debug_mode and os.path.exists(self.location):
+            for f in os.listdir(self.location):
+                os.remove(os.path.join(self.location, f))
+            os.rmdir(self.location)
 
         os.mkdir(self.location)
 
@@ -101,6 +100,7 @@ class ImageScrapper:
                 if self.current >= self.maximum:
                     break
         except Exception as e:
+            self.debug_mode and print(f"\t[gather] error : {e}")
             raise e
         finally:
             browser.quit()

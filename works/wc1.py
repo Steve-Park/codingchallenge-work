@@ -7,6 +7,7 @@ import random
 import itertools
 import time
 from datetime import datetime
+from urllib.error import HTTPError
 
 
 class NewsScrapper:
@@ -50,7 +51,7 @@ class NewsScrapper:
             f'\t\t[scrap_page] {page} - {response.status_code} / {baseurl}')
 
         if not response.ok:
-            raise Exception(response.status_code)
+            raise HTTPError(baseurl, response.status_code)
 
         soup = BeautifulSoup(response.text, 'html.parser')
         page_result = []

@@ -95,7 +95,17 @@ pytest --cov=. --cov-report html:./test-result/report/coverage-report
 ```
 ## 정적 코드 분석
 * SonarQube 를 통하여 정적 코드 분석
+* 정적 코드 분석 불필요한 파일은 모두 삭제 권장 - bug/security report 증가
 * Code Coverage 확인 등을 위한 사전 작업
 ```
 pytest -v -o junit_family=xunit1 --cov=. --cov-report xml:test-result/coverage.xml  --junitxml=test-result/nosetests.xml
+```
+```
+sonar-scanner \
+  -Dsonar.projectKey=codingchallenge-work \
+  -Dsonar.sources=. \
+  -Dsonar.host.url=http://localhost:9000 \
+  -Dsonar.login=cea0f2b4a9b24cc1ceaf2fb66c7354388f138bf1 \
+  -Dsonar.python.coverage.reportPaths=./test-result/coverage.xml \
+  -Dsonar.junit.reportPaths=./test-result/nosetests.xml
 ```
