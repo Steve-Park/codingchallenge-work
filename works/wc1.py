@@ -118,7 +118,7 @@ class NewsScrapper:
         news = asyncio.run(self.__scrap_main())
 
         self.debug_mode and print(
-            f'[newsscrapper-gather] elipsed time: {time.perf_counter() - start:0.2f} seconds')
+            f'\t[gather] elipsed time: {time.perf_counter() - start:0.2f} seconds')
         self.end = datetime.now()
 
         return news
