@@ -6,17 +6,23 @@
 1. 네이버 뉴스 : 키워드 기반의 뉴스 기사 조회 > NewsScrapper
 2. 포탈 사이트 : 키워드 기반의 이미지 검색 > ImageScrapper
 
-
+## 사전 준비 사항
+* Python Version 3.9.7
+* Selenium Web Driver Version 93.0.4577.63 (lastest stable)
+> https://chromedriver.storage.googleapis.com/index.html?path=93.0.4577.63/
 ## NewsScrapper
-### 1. 사이트 분석
+### 1. 용도
+* 네이버 기준 언론사가 특정 키워드의 기사를 많이 송출하는지 확인하기 위한 스크래퍼
+* 데이터 저장: SQLite3 사용
+### 2. 사이트 분석
 * 로그인 여부와 관계 없이 동작
 * JavaScript 등을 통한 HTML 페이지 표시 후 rendering 없음
 * 여러 페이지를 동시 요청 가능
+* 화면 예시
+![뉴스 검색 화면 예시](./images/naver-news-sample.png)
 * URL 구조
 > https://search.naver.com/search.naver?where=news&query={검색어}&start={(page_no -1)*10+1}
-* 화면 예시
-![검색화면 예시](./images/naver-news-sample.png)
-### 2. class 구성
+### 3. class 구성
 * requests, urllib.parse, beautifulsoup 등 사용
   * requests: 웹 페이지 요청
   * urllib.parse: quote 를 통한 한글 검색어 처리
@@ -41,3 +47,18 @@ async def __scrap_main():
 async def __scrap_page():
   await asyncio.sleep(1000)
 ```
+* SQLite3 관련 기능의 경우 Function 기반으로 구성
+## ImageScrapper
+### 1. 용도
+* 다음 기준 키워드의 이미지를 파일로 저장하여 이후 학습 용도로 사용하기 위한 스크래퍼
+* 데이터 저장
+  * 작업 이력 - SQLite3 / 기존 NewsScarpper 의 jobs 테이블 활용, 
+  * 이미지 - 파일
+### 2. 사이트 분석
+* 로그인 여부와 관계 없이 동작
+* HTML 페이지 표시 후 화면 rendering 
+* 스크롤 다운하면서 화면 추가 rendering
+* 화면 예시
+![이미지 검색 화면 예시](./images/daum-image-sample.png)
+* URL 구조
+> https://search.daum.net/search?w=img&nil_search=btn&DA=NTB&enc=utf8&q={검색어}

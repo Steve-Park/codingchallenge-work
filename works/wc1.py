@@ -10,17 +10,18 @@ from datetime import datetime
 
 
 class NewsScrapper:
-    def __init__(self, keyword, maxpages=20, debug_mode: bool = True):
-        """네이버 키워드 뉴스 스크래퍼 생성자
+    def __init__(self, keyword, maxpages=50, debug_mode: bool = True):
+        """네이버 뉴스 스크래퍼 생성자 - 초기 설정
 
         Args:
             keyword (str): 검색어
-            maxpages (int, optional): 최대 검색 페이지. Defaults to 10.
+            maxpages (int, optional): 최대 기사 검색 페이지 수. Defaults to 20.
+            debug_mode (bool, optional): 디버그 로그 출력 여부. Defaults to True.
         """
         self.baseurl = f'https://search.naver.com/search.naver?where=news&query={parse.quote(keyword)}'
         self.keyword = keyword
         self.current = 0
-        self.maximum = maxpages if maxpages < 20 else 20
+        self.maximum = maxpages if maxpages < 50 else 50
         self.debug_mode = debug_mode
         self.start = None
         self.end = None
@@ -67,7 +68,7 @@ class NewsScrapper:
 
         return page_result
 
-    async def __scrap_main(self, max_scrapper=10):
+    async def __scrap_main(self, max_scrapper=20):
         """개별페이지 스크래핑 비동기 처리 함수 호출 및 결과 취합
 
         Args:

@@ -3,6 +3,7 @@ import sqlite3
 create_jobs_sql = '''
     CREATE TABLE IF NOT EXISTS jobs (
         jobid           INTEGER     PRIMARY KEY,
+        type            TEXT,
         keyword         TEXT,
         starttime       TEXT,
         endtime         TEXT
@@ -52,10 +53,10 @@ def get_last_job_id(conn: sqlite3.Connection):
     return 0 if last_job_id is None else int(last_job_id[0])
 
 
-def create_job_info(conn: sqlite3.Connection, job_id: int, keyword: str):
+def create_job_info(conn: sqlite3.Connection, job_id: int, job_type, keyword: str):
     c = conn.cursor()
-    c.execute('INSERT INTO jobs (jobid, keyword) VALUES (?, ?)',
-              (job_id, keyword))
+    c.execute('INSERT INTO jobs (jobid, type, keyword) VALUES (?, ?, ?)',
+              (job_id, job_type, keyword))
     conn.commit()
 
 
