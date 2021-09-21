@@ -130,6 +130,6 @@ dmypy.json
 
 # Custom
 .vscode/
-webdriver/
+webdriver/*
 *.db
 .coverage
