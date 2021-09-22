@@ -10,6 +10,32 @@
 * Python Version 3.9.7
 * Selenium Web Driver Version 93.0.4577.63 (lastest stable)
 > https://chromedriver.storage.googleapis.com/index.html?path=93.0.4577.63/
+* Python Packages
+```
+attrs==21.2.0
+autopep8==1.5.7
+beautifulsoup4==4.10.0
+certifi==2021.5.30
+charset-normalizer==2.0.6
+coverage==5.5
+fake-useragent==0.1.11
+idna==3.2
+iniconfig==1.1.1
+packaging==21.0
+pluggy==1.0.0
+py==1.10.0
+pycodestyle==2.7.0
+pyparsing==2.4.7
+pytest==6.2.5
+pytest-cov==2.12.1
+pytest-html==3.1.1
+pytest-metadata==1.11.0
+requests==2.26.0
+selenium==3.141.0
+soupsieve==2.2.1
+toml==0.10.2
+urllib3==1.26.6
+```
 ## 패키지
 ### NewsScrapper (work.wc1)
 #### 1. 용도
